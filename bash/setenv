@@ -1,0 +1,26 @@
+####
+# Add to ~/.bash_profile:
+# [[ -r ~/Workspace/scripts/bash/setenv ]] && source ~/Workspace/scripts/bash/setenv
+###
+
+SCRIPT_HOME=~/Workspace/scripts/bash
+
+source ${SCRIPT_HOME}/aliases
+source ${SCRIPT_HOME}/functions
+
+# Platform-specific.
+case "$(get_platform)" in
+    Mac) source ${SCRIPT_HOME}/setenv_mac;;
+esac
+
+# Prompt.
+if [[ -z ${__git_ps1} ]]; then
+    GIT_PS1_SHOWDIRTYSTATE=true
+    PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n`date +%H:%M:%S` \[\033[32m\]\u@\h \[\033[35m\]\[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[0m\]\n$ '
+else
+    PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n`date +%H:%M:%S` \[\033[32m\]\u@\h \[\033[35m\]\[\033[33m\]\w\[\033[36m\]\[\033[0m\]\n$ '
+fi
+
+# Tidy.
+unset SCRIPT_HOME
+
