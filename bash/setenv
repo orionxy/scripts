@@ -3,6 +3,8 @@
 # [[ -r ~/Workspace/scripts/bash/setenv ]] && source ~/Workspace/scripts/bash/setenv
 ###
 
+export HISTSIZE=1000
+
 SCRIPT_HOME=~/Workspace/scripts/bash
 
 source ${SCRIPT_HOME}/aliases
@@ -19,6 +21,19 @@ if [[ -z ${__git_ps1} ]]; then
     PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]`date +%H:%M:%S` \[\033[32m\]\u@\h \[\033[35m\]\[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[0m\]\n$ '
 else
     PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]`date +%H:%M:%S` \[\033[32m\]\u@\h \[\033[35m\]\[\033[33m\]\w\[\033[36m\]\[\033[0m\]\n$ '
+fi
+
+# Tidy.
+unset SCRIPT_HOME
+
+# Q
+if [[ -d ${HOME}/q ]]; then
+    export QHOME=${HOME}/q
+    export QCMD=${QHOME}/m32/q
+    alias q='${QCMD}'
+    alias qconsole='cd ${QHOME} && rlwrap -c -r ${QCMD} && cd ${HOME}'
+    alias qserver='cd ${QHOME} && rlwrap -c -r ${QCMD} -p 5001 && cd ${HOME}'
+    #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
 fi
 
 # Tidy.
