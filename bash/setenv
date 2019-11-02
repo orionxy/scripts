@@ -5,7 +5,7 @@
 
 export HISTSIZE=1000
 
-SCRIPT_HOME=~/Workspace/scripts/bash
+SCRIPT_HOME=${HOME}/Workspace/scripts/bash
 
 source ${SCRIPT_HOME}/aliases
 source ${SCRIPT_HOME}/functions
