@@ -46,8 +46,8 @@ BEGIN {
         print "  -i          case-insensitive expression matching\n";
         print "  -n          prefix output with line number\n";
         print "  -fix        match FIX messages with any log level\n";
+        print "  -csv=<,,,>  extract FIX values for the specified tags\n";
         print "  -splunk     replace Splunk's FIX delimiter ' | ' with '^'\n";
-        print "  -csv=<re>   extract comma separated values from (tag=value) pairs for matching tags\n";
         print "  -debug|...  include only entries with specified priority and above\n";
         print "  -red=<re>   highlight matching text in red/green/blue/magenta/yellow/white\n";
         print "  -x          disable all highlighting\n";
@@ -66,11 +66,11 @@ BEGIN {
         print "  red     : ~!!\n";
         print "\nExample:\n";
         print "  hilite.pl -m=8=FIX -warn -blue=Protocol myapp.log\n";
-        print "  hilite.pl -fix -csv=\"11|37\" myapp.log\n";
+        print "  hilite.pl -fix -csv=\"11,37\" myapp.log\n";
         exit;
     }
 
-    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $n, $x, $fix, $splunk, $help);
+    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $n, $x, $fix, $csv, $splunk, $help);
     our ($trace, $debug, $info, $warn, $error, $fatal);
     our ($red, $green, $blue, $magenta, $yellow, $white);
     our ($isNewEntry, $matchedEntry);
@@ -145,6 +145,12 @@ BEGIN {
             $hilite{$white} = WHITE_HILITE_COLOR;
         }
     }
+
+    # array of csv tags
+    if ($csv) {
+        print "${csv},\n";
+        @csv = split(',', $csv);
+    }
 }
 
 # strip highlighting
@@ -200,11 +206,12 @@ s/${\SOH}/\^/gi;
 !$splunk or s/ \| /\^/gi;
 
 # FIX to CSV
-if ($csv and m/8=FIX/) {
-    while (s/\^($csv)=([^\^]*)//) {
-        print "${2},";
-    }
-    print "\n" and next;
+if (@csv and m/8=FIX/) {
+    foreach my $tag (@csv) {
+        m/\^$tag=([^\^]*)/ and print "${1}";
+        print ",";
+     }
+     print "\n" and next;
 }
 
 if (!$x) {
