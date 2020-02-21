@@ -174,7 +174,7 @@ $exit = ($e and m/$e/);
 # strip bamboo prefix
 !$bamboo or s/^[^\t]*?\t[^\t]*?\t//;
 
-if (!$exit and (!$fix or !m/8=FIX/)) {
+if (!$exit) {
     # match new entries against log level
     $isNewEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/;
     if ($isNewEntry) {
@@ -182,14 +182,16 @@ if (!$exit and (!$fix or !m/8=FIX/)) {
         if (!$matchedEntry) {
             !$v or m/$v/ and next;
             !$vv or m/$vv/ and next;
-            !$trace
-                or !($matchedEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/)
-                and next;
-            !$debug or !($matchedEntry = m/${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$info or !($matchedEntry = m/${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$warn or !($matchedEntry = m/${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$error or !($matchedEntry = m/${\ERROR}|${\FATAL}/) and next;
-            !$fatal or !($matchedEntry = m/${\FATAL}/) and next;
+            if (!$fix or !m/8=FIX/) {
+                !$trace
+                    or !($matchedEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/)
+                    and next;
+                !$debug or !($matchedEntry = m/${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$info or !($matchedEntry = m/${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$warn or !($matchedEntry = m/${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$error or !($matchedEntry = m/${\ERROR}|${\FATAL}/) and next;
+                !$fatal or !($matchedEntry = m/${\FATAL}/) and next;
+            }
             $matchedEntry = (!$m or m/$m/); # apply the filter
         }
     }
