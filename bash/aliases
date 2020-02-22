@@ -3,3 +3,5 @@ alias ll='lh -l'
 alias la='ll -a'
 alias lr='ll -tr'
 
+alias hilite=hilite.pl
+

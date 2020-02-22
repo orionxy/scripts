@@ -5,14 +5,17 @@
 
 export HISTSIZE=1000
 
-SCRIPT_HOME=${HOME}/Workspace/scripts/bash
+SCRIPTS_HOME=${HOME}/Workspace/scripts
+BASH_SCRIPTS=${SCRIPTS_HOME}/bash
+PERL_SCRIPTS=${SCRIPTS_HOME}/perl
+PYTHON_SCRIPTS=${SCRIPTS_HOME}/python
 
-source ${SCRIPT_HOME}/aliases
-source ${SCRIPT_HOME}/functions
+source ${BASH_SCRIPTS}/aliases
+source ${BASH_SCRIPTS}/functions
 
 # Platform-specific.
 case "$(get_platform)" in
-    Mac) source ${SCRIPT_HOME}/setenv_mac;;
+    Mac) source ${BASH_SCRIPTS}/setenv_mac;;
 esac
 
 # Prompt.
@@ -22,9 +25,6 @@ if [[ -z ${__git_ps1} ]]; then
 else
     PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]`date +%H:%M:%S` \[\033[32m\]\u@\h \[\033[35m\]\[\033[33m\]\w\[\033[36m\]\[\033[0m\]\n$ '
 fi
-
-# Tidy.
-unset SCRIPT_HOME
 
 # Q
 if [[ -d ${HOME}/q ]]; then
@@ -36,6 +36,6 @@ if [[ -d ${HOME}/q ]]; then
     #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
 fi
 
-# Tidy.
-unset SCRIPT_HOME
+# Path setup.
+[[ ! ${PATH} =~ .*${PERL_SCRIPTS}.* ]] && export PATH=${PATH}:${PERL_SCRIPTS}
 
