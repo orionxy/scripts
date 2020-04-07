@@ -46,8 +46,8 @@ BEGIN {
         print "  -i          case-insensitive expression matching\n";
         print "  -n          prefix output with line number\n";
         print "  -fix        match FIX messages with any log level\n";
+        print "  -csv=<,,,>  extract FIX values for the specified tags\n";
         print "  -splunk     replace Splunk's FIX delimiter ' | ' with '^'\n";
-        print "  -csv=<re>   extract comma separated values from (tag=value) pairs for matching tags\n";
         print "  -debug|...  include only entries with specified priority and above\n";
         print "  -red=<re>   highlight matching text in red/green/blue/magenta/yellow/white\n";
         print "  -x          disable all highlighting\n";
@@ -66,11 +66,11 @@ BEGIN {
         print "  red     : ~!!\n";
         print "\nExample:\n";
         print "  hilite.pl -m=8=FIX -warn -blue=Protocol myapp.log\n";
-        print "  hilite.pl -fix -csv=\"11|37\" myapp.log\n";
+        print "  hilite.pl -fix -csv=\"11,37\" myapp.log\n";
         exit;
     }
 
-    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $n, $x, $fix, $splunk, $help);
+    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $n, $x, $fix, $csv, $splunk, $help);
     our ($trace, $debug, $info, $warn, $error, $fatal);
     our ($red, $green, $blue, $magenta, $yellow, $white);
     our ($isNewEntry, $matchedEntry);
@@ -145,6 +145,12 @@ BEGIN {
             $hilite{$white} = WHITE_HILITE_COLOR;
         }
     }
+
+    # array of csv tags
+    if ($csv) {
+        print "${csv},\n";
+        @csv = split(',', $csv);
+    }
 }
 
 # strip highlighting
@@ -168,7 +174,7 @@ $exit = ($e and m/$e/);
 # strip bamboo prefix
 !$bamboo or s/^[^\t]*?\t[^\t]*?\t//;
 
-if (!$exit and (!$fix or !m/8=FIX/)) {
+if (!$exit) {
     # match new entries against log level
     $isNewEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/;
     if ($isNewEntry) {
@@ -176,14 +182,16 @@ if (!$exit and (!$fix or !m/8=FIX/)) {
         if (!$matchedEntry) {
             !$v or m/$v/ and next;
             !$vv or m/$vv/ and next;
-            !$trace
-                or !($matchedEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/)
-                and next;
-            !$debug or !($matchedEntry = m/${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$info or !($matchedEntry = m/${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$warn or !($matchedEntry = m/${\WARN}|${\ERROR}|${\FATAL}/) and next;
-            !$error or !($matchedEntry = m/${\ERROR}|${\FATAL}/) and next;
-            !$fatal or !($matchedEntry = m/${\FATAL}/) and next;
+            if (!$fix or !m/8=FIX/) {
+                !$trace
+                    or !($matchedEntry = m/${\TRACE}|${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/)
+                    and next;
+                !$debug or !($matchedEntry = m/${\DEBUG}|${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$info or !($matchedEntry = m/${\INFO}|${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$warn or !($matchedEntry = m/${\WARN}|${\ERROR}|${\FATAL}/) and next;
+                !$error or !($matchedEntry = m/${\ERROR}|${\FATAL}/) and next;
+                !$fatal or !($matchedEntry = m/${\FATAL}/) and next;
+            }
             $matchedEntry = (!$m or m/$m/); # apply the filter
         }
     }
@@ -200,11 +208,12 @@ s/${\SOH}/\^/gi;
 !$splunk or s/ \| /\^/gi;
 
 # FIX to CSV
-if ($csv and m/8=FIX/) {
-    while (s/\^($csv)=([^\^]*)//) {
-        print "${2},";
-    }
-    print "\n" and next;
+if (@csv and m/8=FIX/) {
+    foreach my $tag (@csv) {
+        m/\^$tag=([^\^]*)/ and print "${1}";
+        print ",";
+     }
+     print "\n" and next;
 }
 
 if (!$x) {

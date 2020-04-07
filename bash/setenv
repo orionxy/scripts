@@ -3,14 +3,19 @@
 # [[ -r ~/Workspace/scripts/bash/setenv ]] && source ~/Workspace/scripts/bash/setenv
 ###
 
-SCRIPT_HOME=~/Workspace/scripts/bash
+export HISTSIZE=1000
 
-source ${SCRIPT_HOME}/aliases
-source ${SCRIPT_HOME}/functions
+SCRIPTS_HOME=${HOME}/Workspace/scripts
+BASH_SCRIPTS=${SCRIPTS_HOME}/bash
+PERL_SCRIPTS=${SCRIPTS_HOME}/perl
+PYTHON_SCRIPTS=${SCRIPTS_HOME}/python
+
+source ${BASH_SCRIPTS}/aliases
+source ${BASH_SCRIPTS}/functions
 
 # Platform-specific.
 case "$(get_platform)" in
-    Mac) source ${SCRIPT_HOME}/setenv_mac;;
+    Mac) source ${BASH_SCRIPTS}/setenv_mac;;
 esac
 
 # Prompt.
@@ -21,6 +26,16 @@ else
     PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n`date +%H:%M:%S` \[\033[01;32m\]\u@\h \[\033[01;34m\]\w\[\033[00;36m\]\[\033[0m\]\n$ '
 fi
 
-# Tidy.
-unset SCRIPT_HOME
+# Q
+if [[ -d ${HOME}/q ]]; then
+    export QHOME=${HOME}/q
+    export QCMD=${QHOME}/m32/q
+    alias q='${QCMD}'
+    alias qconsole='cd ${QHOME} && rlwrap -c -r ${QCMD} && cd ${HOME}'
+    alias qserver='cd ${QHOME} && rlwrap -c -r ${QCMD} -p 5001 && cd ${HOME}'
+    #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
+fi
+
+# Path setup.
+[[ ! ${PATH} =~ .*${PERL_SCRIPTS}.* ]] && export PATH=${PATH}:${PERL_SCRIPTS}
 
