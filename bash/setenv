@@ -4,6 +4,7 @@
 ###
 
 export HISTSIZE=1000
+export LOG_PATH=${HOME}/Downloads/log
 
 SCRIPTS_HOME=${HOME}/Workspace/scripts
 BASH_SCRIPTS=${SCRIPTS_HOME}/bash
@@ -16,6 +17,8 @@ source ${BASH_SCRIPTS}/functions
 # Platform-specific.
 case "$(get_platform)" in
     Mac) source ${BASH_SCRIPTS}/setenv_mac;;
+    Linux) source ${BASH_SCRIPTS}/setenv_linux;;
+    Cygwin) source ${BASH_SCRIPTS}/setenv_cygwin;;
 esac
 
 # Prompt.
