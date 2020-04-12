@@ -1,5 +1,4 @@
-#!/bin/perl -s -wn
-#use strict;
+#!/usr/bin/perl -s -wn
 use warnings;
 use Term::ANSIColor;
 
@@ -29,6 +28,13 @@ use constant {
 };
 
 BEGIN {
+
+    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $vv, $n, $x, $fix, $csv, @csv, $help);
+    our ($trace, $debug, $info, $warn, $error, $fatal);
+    our ($red, $green, $blue, $magenta, $yellow, $white);
+    our ($isNewEntry, $matchedEntry);
+    our (%exact, %fix, %hilite);
+
     if ($help) {
         print "Usage:\n";
         print "  hilite.pl [-options] [-trace|debug|info|warn|error|fatal] [-red=<RE>] [file]\n";
@@ -47,7 +53,6 @@ BEGIN {
         print "  -n          prefix output with line number\n";
         print "  -fix        match FIX messages with any log level\n";
         print "  -csv=<,,,>  extract FIX values for the specified tags\n";
-        print "  -splunk     replace Splunk's FIX delimiter ' | ' with '^'\n";
         print "  -debug|...  include only entries with specified priority and above\n";
         print "  -red=<re>   highlight matching text in red/green/blue/magenta/yellow/white\n";
         print "  -x          disable all highlighting\n";
@@ -69,12 +74,6 @@ BEGIN {
         print "  hilite.pl -fix -csv=\"11,37\" myapp.log\n";
         exit;
     }
-
-    our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $n, $x, $fix, $csv, $splunk, $help);
-    our ($trace, $debug, $info, $warn, $error, $fatal);
-    our ($red, $green, $blue, $magenta, $yellow, $white);
-    our ($isNewEntry, $matchedEntry);
-    our (%exact, %fix, %hilite);
 
     $isNewEntry = 0;
     $matchedEntry = (!$trace and !$debug and !$info and !$warn and !$error and !$fatal);
@@ -146,11 +145,11 @@ BEGIN {
         }
     }
 
-    # array of csv tags
-    if ($csv) {
-        print "${csv},\n";
-        @csv = split(',', $csv);
-    }
+    # array of csv tags
+    if ($csv) {
+        print "${csv},\n";
+        @csv = split(',', $csv);
+    }
 }
 
 # strip highlighting
@@ -162,7 +161,8 @@ if ($t) {
         if ($r) {
             $triggered = !m/$r/;
         }
-    } else {
+    }
+    else {
         $triggered = m/$t/;
         $triggered or next;
     }
@@ -202,18 +202,15 @@ if (!$exit) {
 !$c or s/$c//gi;
 
 # SOH
-s/${\SOH}/\^/gi;
-
-# Splunk
-!$splunk or s/ \| /\^/gi;
+m/8=FIX/ and s/(${\SOH}|[ ]{0,1}\|[ ]{0,1})/\^/gi;
 
 # FIX to CSV
 if (@csv and m/8=FIX/) {
-    foreach my $tag (@csv) {
-        m/\^$tag=([^\^]*)/ and print "${1}";
-        print ",";
-     }
-     print "\n" and next;
+    foreach my $tag (@csv) {
+        m/\^$tag=([^\^]*)/ and print "${1}";
+        print ",";
+    }
+    print "\n" and next;
 }
 
 if (!$x) {
@@ -227,7 +224,7 @@ if (!$x) {
     foreach $key (keys %fix) {
         s/\^(($key)=[^\^]*)/\^$fix{$key}${1}${\RESET}/g;
     }
-    
+
     # highlighting
     foreach $key (keys %hilite) {
         s/($key)/$hilite{$key}${1}${\RESET}/g;
