@@ -17,6 +17,10 @@ PYTHON_SCRIPTS=${SCRIPTS_HOME}/python
 source ${BASH_SCRIPTS}/aliases
 source ${BASH_SCRIPTS}/functions
 
+# Host specific.
+[[ -r ~/.aliases ]] && source ~/.aliases
+[[ -r ~/.functions ]] && source ~/.functions
+
 # Platform-specific.
 case "$(get_platform)" in
     Mac) source ${BASH_SCRIPTS}/setenv_mac;;
