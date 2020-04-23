@@ -9,17 +9,17 @@
 export HISTSIZE=1000
 export LOG_PATH=${HOME}/Downloads/log
 
-SCRIPTS_HOME=${HOME}/Workspace/scripts
+SCRIPTS_HOME=${HOME}/scripts
 BASH_SCRIPTS=${SCRIPTS_HOME}/bash
 PERL_SCRIPTS=${SCRIPTS_HOME}/perl
 PYTHON_SCRIPTS=${SCRIPTS_HOME}/python
 
-source ${BASH_SCRIPTS}/aliases
 source ${BASH_SCRIPTS}/functions
+source ${BASH_SCRIPTS}/aliases
 
 # Host specific.
-[[ -r ~/.aliases ]] && source ~/.aliases
 [[ -r ~/.functions ]] && source ~/.functions
+[[ -r ~/.aliases ]] && source ~/.aliases
 
 # Platform-specific.
 case "$(get_platform)" in
