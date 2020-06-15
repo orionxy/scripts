@@ -7,7 +7,7 @@
 ###
 
 export HISTSIZE=1000
-export LOG_PATH=${HOME}/Downloads/log
+export LOG_DIR=${HOME}/Downloads/logs
 
 SCRIPTS_HOME=${HOME}/scripts
 BASH_SCRIPTS=${SCRIPTS_HOME}/bash
