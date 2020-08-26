@@ -52,7 +52,7 @@ BEGIN {
         print "  -i          case-insensitive expression matching\n";
         print "  -n          prefix output with line number\n";
         print "  -fix        match FIX messages with any log level\n";
-        print "  -csv=<,,,>  extract FIX values for the specified tags\n";
+        print "  -csv=<,,,>  extract FIX values for the specified tags\n";
         print "  -debug|...  include only entries with specified priority and above\n";
         print "  -red=<re>   highlight matching text in red/green/blue/magenta/yellow/white\n";
         print "  -x          disable all highlighting\n";
