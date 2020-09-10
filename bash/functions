@@ -12,7 +12,12 @@ function get_platform() {
 }
 
 function mvn_checks() {
+    echo Effective POM...
     mvn help:effective-pom > pom-effective.xml
+
+    echo Dependency tree...
     mvn dependency:tree > tree.log
+
+    echo Enforcer...
     mvn enforcer:enforce > enforcer.log
 }
