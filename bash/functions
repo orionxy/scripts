@@ -11,3 +11,8 @@ function get_platform() {
     echo ${machine}
 }
 
+function mvn_checks() {
+    mvn help:effective-pom > pom-effective.xml
+    mvn dependency:tree > tree.log
+    mvn enforcer:enforce > enforcer.log
+}
