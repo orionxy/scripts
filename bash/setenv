@@ -37,12 +37,10 @@ else
 fi
 
 # Q
-if [[ -d ${HOME}/q ]]; then
-    export QHOME=${HOME}/q
+if [ ! -z ${QHOME} ]; then
     export QCMD=${QHOME}/m32/q
     alias q='${QCMD}'
-    alias qconsole='cd ${QHOME} && rlwrap -c -r ${QCMD} && cd ${HOME}'
-    alias qserver='cd ${QHOME} && rlwrap -c -r ${QCMD} -p 5001 && cd ${HOME}'
+    alias qconsole='cd ${QHOME} && winpty ${QCMD} && cd -'
     #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
 fi
 
