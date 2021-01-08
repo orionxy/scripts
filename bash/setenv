@@ -40,7 +40,7 @@ fi
 if [ ! -z ${QHOME} ]; then
     export QCMD=${QHOME}/m32/q
     alias q='${QCMD}'
-    alias qconsole='cd ${QHOME} && winpty ${QCMD} && cd -'
+    alias qconsole='cd ${QHOME} && winpty ${QCMD}'
     #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
 fi
 
