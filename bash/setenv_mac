@@ -1,3 +1,10 @@
 # brew install git bash-completion
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
 
+# Q
+if [ ! -z ${QHOME} ]; then
+    export QCMD=${QHOME}/m32/q
+    alias q='${QCMD}'
+    alias qconsole='cd ${QHOME} && rlwrap ${QCMD}'
+    #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
+fi

@@ -5,19 +5,19 @@ use Term::ANSIColor;
 use constant {
     SOH                      => '\x01',
     RESET                    => color("reset"),
-    TRACE                    => '^.{0,60}\bTRACE\b',
+    TRACE                    => '^.{0,120}\bTRACE\b',
     BOLD_BLUE                => color("bold blue"),
-    DEBUG                    => '^.{0,60}\bDEBUG\b|#%%',
+    DEBUG                    => '^.{0,120}\bDEBUG\b|#%%',
     GREEN                    => color("green"),
     MAGENTA                  => color("magenta"),
-    INFO                     => '^.{0,60}\bINFO\b|#--',
+    INFO                     => '^.{0,120}\bINFO\b|#--',
     BOLD_WHITE               => color("bold white"),
-    WARN                     => '^.{0,60}\bWARN\b|#>>',
+    WARN                     => '^.{0,120}\bWARN\b|#>>',
     BOLD_YELLOW              => color("bold yellow"),
-    ERROR                    => '^.{0,60}\bERROR\b|#!!',
+    ERROR                    => '^.{0,120}\bERROR\b|#!!',
     EXCEPTION                => '^\S*Exception|^\s+at ',
     BOLD_RED                 => color("bold red"),
-    FATAL                    => '^.{0,60}\bFATAL\b',
+    FATAL                    => '^.{0,120}\bFATAL\b',
     BLINK_BOLD_YELLOW_ON_RED => color("blink bold yellow on_red"),
     RED_HILITE_COLOR         => color("bold white on_red"),
     GREEN_HILITE_COLOR       => color("black on_green"),
@@ -31,7 +31,7 @@ BEGIN {
 
     our ($m, $a, $aa, $e, $exit, $t, $triggered, $r, $c, $bamboo, $i, $v, $vv, $n, $x, $fix, $csv, @csv, $help);
     our ($trace, $debug, $info, $warn, $error, $fatal);
-    our ($red, $green, $blue, $magenta, $yellow, $white);
+    our ($red, $rred, $green, $ggreen, $blue, $bblue, $magenta, $mmagenta, $yellow, $yyellow, $white, $wwhite);
     our ($isNewEntry, $matchedEntry);
     our (%exact, %fix, %hilite);
 
@@ -55,6 +55,7 @@ BEGIN {
         print "  -csv=<,,,>  extract FIX values for the specified tags\n";
         print "  -debug|...  include only entries with specified priority and above\n";
         print "  -red=<re>   highlight matching text in red/green/blue/magenta/yellow/white\n";
+        print "  -rred=<re>  same as '-red', useful for aliasing\n";
         print "  -x          disable all highlighting\n";
         print "  -help       show this help\n";
         print "\nPriorities:\n";
@@ -90,11 +91,17 @@ BEGIN {
         $v and $v = '(?i)' . $v;
         $vv and $vv = '(?i)' . $vv;
         $red and $red = '(?i)' . $red;
+        $rred and $rred = '(?i)' . $rred;
         $green and $green = '(?i)' . $green;
+        $ggreen and $ggreen = '(?i)' . $ggreen;
         $blue and $blue = '(?i)' . $blue;
+        $bblue and $bblue = '(?i)' . $bblue;
         $magenta and $magenta = '(?i)' . $magenta;
+        $mmagenta and $mmagenta = '(?i)' . $mmagenta;
         $yellow and $yellow = '(?i)' . $yellow;
+        $yyellow and $yyellow = '(?i)' . $yyellow;
         $white and $white = '(?i)' . $white;
+        $wwhite and $wwhite = '(?i)' . $wwhite;
     }
 
     if (!$x) {
@@ -125,24 +132,18 @@ BEGIN {
         $fix{"39|150|151|58|32|31|6|14"} = BOLD_YELLOW;
         $fix{"100|207|30|15|48|448|2595|528"} = MAGENTA;
         # specified highlights
-        if ($red) {
-            $hilite{$red} = RED_HILITE_COLOR;
-        }
-        if ($green) {
-            $hilite{$green} = GREEN_HILITE_COLOR;
-        }
-        if ($blue) {
-            $hilite{$blue} = BLUE_HILITE_COLOR;
-        }
-        if ($magenta) {
-            $hilite{$magenta} = MAGENTA_HILITE_COLOR;
-        }
-        if ($yellow) {
-            $hilite{$yellow} = YELLOW_HILITE_COLOR;
-        }
-        if ($white) {
-            $hilite{$white} = WHITE_HILITE_COLOR;
-        }
+        $red and $hilite{$red} = RED_HILITE_COLOR;
+        $rred and $hilite{$rred} = RED_HILITE_COLOR;
+        $green and $hilite{$green} = GREEN_HILITE_COLOR;
+        $ggreen and $hilite{$ggreen} = GREEN_HILITE_COLOR;
+        $blue and $hilite{$blue} = BLUE_HILITE_COLOR;
+        $bblue and $hilite{$bblue} = BLUE_HILITE_COLOR;
+        $magenta and $hilite{$magenta} = MAGENTA_HILITE_COLOR;
+        $mmagenta and $hilite{$mmagenta} = MAGENTA_HILITE_COLOR;
+        $yellow and $hilite{$yellow} = YELLOW_HILITE_COLOR;
+        $yyellow and $hilite{$yyellow} = YELLOW_HILITE_COLOR;
+        $white and $hilite{$white} = WHITE_HILITE_COLOR;
+        $wwhite and $hilite{$wwhite} = WHITE_HILITE_COLOR;
     }
 
     # array of csv tags

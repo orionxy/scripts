@@ -36,14 +36,6 @@ else
     PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n`date +%H:%M:%S` \[\033[01;32m\]\u@\h \[\033[01;34m\]\w\[\033[00;36m\]\[\033[0m\]\n$ '
 fi
 
-# Q
-if [ ! -z ${QHOME} ]; then
-    export QCMD=${QHOME}/m32/q
-    alias q='${QCMD}'
-    alias qconsole='cd ${QHOME} && winpty ${QCMD}'
-    #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
-fi
-
 # Path setup.
 [[ ! ${PATH} =~ .*${PERL_SCRIPTS}.* ]] && export PATH=${PATH}:${PERL_SCRIPTS}
 
