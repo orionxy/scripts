@@ -25,7 +25,7 @@ source ${BASH_SCRIPTS}/aliases
 case "$(get_platform)" in
     Mac) source ${BASH_SCRIPTS}/setenv_mac;;
     Linux) source ${BASH_SCRIPTS}/setenv_linux;;
-    Cygwin) source ${BASH_SCRIPTS}/setenv_cygwin;;
+    Win) source ${BASH_SCRIPTS}/setenv_win;;
 esac
 
 # Prompt.

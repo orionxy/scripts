@@ -4,8 +4,8 @@ function get_platform() {
     case "${unameOut}" in
         Linux*)     machine=Linux;;
         Darwin*)    machine=Mac;;
-        CYGWIN*)    machine=Cygwin;;
-        MINGW*)     machine=MinGw;;
+        CYGWIN*)    machine=Win;;
+        MINGW*)     machine=Win;;
         *)          machine="UNKNOWN:${unameOut}"
     esac
     echo ${machine}
