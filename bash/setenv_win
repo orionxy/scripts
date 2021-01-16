@@ -3,5 +3,4 @@ if [ ! -z ${QHOME} ]; then
     export QCMD=${QHOME}/w32/q
     alias q='${QCMD}'
     alias qconsole='cd ${QHOME} && winpty ${QCMD} -p 10001'
-    #[[ ! ${PATH} =~ .*${QHOME}.* ]] && export PATH=${PATH}:${QHOME}
 fi

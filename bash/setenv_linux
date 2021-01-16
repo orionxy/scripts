@@ -1,0 +1,6 @@
+# Q
+if [ ! -z ${QHOME} ]; then
+    export QCMD=${QHOME}/l32/q
+    alias q='${QCMD}'
+    alias qconsole='cd ${QHOME} && rlwrap ${QCMD}'
+fi
