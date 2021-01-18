@@ -2,7 +2,8 @@
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
 
 # Q
-if [ ! -z ${QHOME} ]; then
+if [ -r ~/q ]; then
+    export QHOME=~/q
     export QCMD=${QHOME}/m32/q
     alias q='${QCMD}'
     alias qconsole='cd ${QHOME} && rlwrap ${QCMD}'

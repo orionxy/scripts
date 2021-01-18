@@ -1,6 +1,7 @@
 # Q
-if [ ! -z ${QHOME} ]; then
+if [ -r ~/q ]; then
+    export QHOME=`cygpath -w ~/q`
     export QCMD=${QHOME}/w32/q
     alias q='${QCMD}'
-    alias qconsole='cd ${QHOME} && winpty ${QCMD} -p 10001'
+    alias qconsole='cd ${QHOME} && rlwrap ${QCMD}'
 fi

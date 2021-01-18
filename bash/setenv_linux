@@ -1,5 +1,6 @@
 # Q
-if [ ! -z ${QHOME} ]; then
+if [ -r ~/q ]; then
+    export QHOME=~/q
     export QCMD=${QHOME}/l32/q
     alias q='${QCMD}'
     alias qconsole='cd ${QHOME} && rlwrap ${QCMD}'

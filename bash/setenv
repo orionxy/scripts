@@ -8,7 +8,6 @@
 
 export HISTSIZE=1000
 export LOG_DIR=${HOME}/Downloads/logs
-[[ -r ~/q ]] && export QHOME=${HOME}/q
 
 SCRIPTS_HOME=${HOME}/scripts
 BASH_SCRIPTS=${SCRIPTS_HOME}/bash
