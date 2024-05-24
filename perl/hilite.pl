@@ -121,11 +121,11 @@ BEGIN {
         $exact{"~>>.*"} = YELLOW_HILITE_COLOR;
         $exact{"~!!.*"} = RED_HILITE_COLOR;
         # FIX
-        $exact{"35=[ADVHRc]+"} = GREEN_HILITE_COLOR;
+        $exact{"35=[ADVHRcx]+"} = GREEN_HILITE_COLOR;
         $exact{"35=[0]"} = BLUE_HILITE_COLOR;
         $exact{"35=[1245hFG]"} = YELLOW_HILITE_COLOR;
         $exact{"35=[3j9Y]"} = RED_HILITE_COLOR;
-        $exact{"35=[8WXSd]"} = WHITE_HILITE_COLOR;
+        $exact{"35=[8WXSdy]"} = WHITE_HILITE_COLOR;
         $exact{"35=AI"} = WHITE_HILITE_COLOR;
         $fix{"43|97"} = BOLD_RED;
         $fix{"54|55|38|44|40|59|126|432"} = GREEN;
