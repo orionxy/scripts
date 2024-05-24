@@ -5,19 +5,19 @@ use Term::ANSIColor;
 use constant {
     SOH                      => '\x01',
     RESET                    => color("reset"),
-    TRACE                    => '^.{0,120}\bTRACE\b',
+    TRACE                    => '^.{0,140}\bTRACE\b',
     BOLD_BLUE                => color("bold blue"),
-    DEBUG                    => '^.{0,120}\bDEBUG\b|#%%',
+    DEBUG                    => '^.{0,140}\bDEBUG\b|#%%',
     GREEN                    => color("green"),
     MAGENTA                  => color("magenta"),
-    INFO                     => '^.{0,120}\bINFO\b|#--',
+    INFO                     => '^.{0,140}\bINFO\b|#--',
     BOLD_WHITE               => color("bold white"),
-    WARN                     => '^.{0,120}\bWARN\b|#>>',
+    WARN                     => '^.{0,140}\bWARN\b|#>>',
     BOLD_YELLOW              => color("bold yellow"),
-    ERROR                    => '^.{0,120}\bERROR\b|#!!',
+    ERROR                    => '^.{0,140}\bERROR\b|#!!',
     EXCEPTION                => '^\S*Exception|^\s+at ',
     BOLD_RED                 => color("bold red"),
-    FATAL                    => '^.{0,120}\bFATAL\b',
+    FATAL                    => '^.{0,140}\bFATAL\b',
     BLINK_BOLD_YELLOW_ON_RED => color("blink bold yellow on_red"),
     RED_HILITE_COLOR         => color("bold white on_red"),
     GREEN_HILITE_COLOR       => color("black on_green"),
@@ -121,11 +121,12 @@ BEGIN {
         $exact{"~>>.*"} = YELLOW_HILITE_COLOR;
         $exact{"~!!.*"} = RED_HILITE_COLOR;
         # FIX
-        $exact{"35=[ADVH]"} = GREEN_HILITE_COLOR;
+        $exact{"35=[ADVHRc]+"} = GREEN_HILITE_COLOR;
         $exact{"35=[0]"} = BLUE_HILITE_COLOR;
         $exact{"35=[1245hFG]"} = YELLOW_HILITE_COLOR;
-        $exact{"35=[3j9]"} = RED_HILITE_COLOR;
-        $exact{"35=[8W]"} = WHITE_HILITE_COLOR;
+        $exact{"35=[3j9Y]"} = RED_HILITE_COLOR;
+        $exact{"35=[8WXSd]"} = WHITE_HILITE_COLOR;
+        $exact{"35=AI"} = WHITE_HILITE_COLOR;
         $fix{"43|97"} = BOLD_RED;
         $fix{"54|55|38|44|40|59|126|432"} = GREEN;
         $fix{"34|11|41|37|17"} = BOLD_BLUE;
